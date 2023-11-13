@@ -1,6 +1,6 @@
 package christmas.util.menu;
 
-public enum Desert implements Menu {
+public enum Desert implements Food {
     CHOCOLATE_CAKE("초코케이크", 15000),
     ICECREAM("아이스크림,", 5000);
 

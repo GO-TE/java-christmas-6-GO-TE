@@ -1,9 +1,7 @@
 package christmas.util;
 
-import christmas.util.menu.Appetizer;
-import christmas.util.menu.Desert;
+import christmas.util.menu.Food;
 import christmas.util.menu.Drink;
-import christmas.util.menu.MainMenu;
 import christmas.util.menu.Menu;
 import christmas.util.message.ErrorMessage;
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ public class OrderValidator {
     }
 
     public void validateEachOrder(String[] part) {
-        if (!getMenu().contains(part[0])) {
+        if (!new Menu().getAllMenuName().contains(part[0])) {
             throw new IllegalArgumentException(ErrorMessage.NON_EXISTENT_MENU.getMessage());
         }
         if (Integer.parseInt(part[1]) >= 0) {
@@ -62,28 +60,11 @@ public class OrderValidator {
     public void checkOnlyDrink(List<String> order) {
         if (order.stream()
                 .allMatch(menu -> Arrays.stream(Drink.values())
-                        .map(Menu::getMenuName)
+                        .map(Food::getMenuName)
                         .toList()
                         .contains(menu))) {
             throw new IllegalArgumentException(ErrorMessage.ONLY_DRINKS_EXCEPTION.getMessage());
         }
-    }
-
-    private ArrayList<String> getMenu() {
-        ArrayList<Menu> menu = new ArrayList<>();
-        menu.addAll(getMenuList(Appetizer.values()));
-        menu.addAll(getMenuList(MainMenu.values()));
-        menu.addAll(getMenuList(Desert.values()));
-        menu.addAll(getMenuList(Drink.values()));
-
-        return menu.stream()
-                .map(Menu::getMenuName)
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-
-    private <T extends Enum<T> & Menu> ArrayList<Menu> getMenuList(T[] values) {
-        return new ArrayList<>(Arrays.asList(values));
     }
 
 }

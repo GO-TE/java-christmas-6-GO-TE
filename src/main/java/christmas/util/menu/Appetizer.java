@@ -1,6 +1,6 @@
 package christmas.util.menu;
 
-public enum Appetizer implements Menu {
+public enum Appetizer implements Food {
 
     MUSHROOM_SOUP("양송이수프", 6000),
     TAPAS("타파스", 5500),
