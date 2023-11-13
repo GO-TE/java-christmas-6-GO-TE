@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class OrderValidator {
     private final String MENU_REGEX = "^([가-힣]+-\\d+,?)+$";
 
-    public void validateOrderMenu(String input) {
+    public HashMap<String, Integer> validateOrderMenu(String input) {
         validateMenuRegex(input);
         List<String> userMenu = splitInputByComma(input);
         HashMap<String, Integer> order = new HashMap<>();
@@ -27,6 +27,7 @@ public class OrderValidator {
         }
         validateOrderCount(order.values());
         checkOnlyDrink(new ArrayList<>(order.keySet()));
+        return order;
     }
 
     public void validateEachOrder(String[] part) {
