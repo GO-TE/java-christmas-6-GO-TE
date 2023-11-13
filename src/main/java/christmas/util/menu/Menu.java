@@ -1,6 +1,6 @@
 package christmas.util.menu;
 
-public interface MenuInterface {
+public interface Menu {
     String getMenuName();
     int getPrice();
 
