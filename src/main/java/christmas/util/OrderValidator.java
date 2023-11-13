@@ -8,46 +8,40 @@ import christmas.util.menu.Menu;
 import christmas.util.message.ErrorMessage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Validator {
-    private final String DATE_REGEX = "^\\d+$";
+public class OrderValidator {
     private final String MENU_REGEX = "^([가-힣]+-\\d+,?)+$";
 
-    private int validateDateRegex(String input) {
-        if (!input.matches(DATE_REGEX)) {
-            throw new IllegalArgumentException(ErrorMessage.NOT_INTEGER_ERROR.getMessage());
-        }
-        return Integer.parseInt(input);
-    }
-
-    public void validateDate(String input) {
-        int date = validateDateRegex(input);
-        if (date > 31 || date < 1) {
-            throw new IllegalArgumentException(ErrorMessage.INVALID_DATE_ERROR.getMessage());
-        }
-    }
-
-    public void validateOrderMenu(String input) { // 메소드 분리
+    public void validateOrderMenu(String input) {
         validateMenuRegex(input);
         List<String> userMenu = splitInputByComma(input);
         HashMap<String, Integer> order = new HashMap<>();
         for (String eachOrder : userMenu) {
             String[] part = eachOrder.split("-");
-            if (Integer.parseInt(part[1]) >= 0) {
-                throw new IllegalArgumentException("[ERROR] 메뉴의 갯수를 잘못 입력하셨습니다.");
-            }
+            validateEachOrder(part);
             order.put(part[0], Integer.parseInt(part[1]));
         }
-
-        if (order.values().stream().mapToInt(Integer::intValue).sum() > 20) {
-            throw new IllegalArgumentException("[ERROR] 메뉴는 20개 까지 주문 가능합니다.");
-        }
+        validateOrderCount(order.values());
         checkOnlyDrink(new ArrayList<>(order.keySet()));
+    }
 
+    public void validateEachOrder(String[] part) {
+        if (!getMenu().contains(part[0])) {
+            throw new IllegalArgumentException(ErrorMessage.NON_EXISTENT_MENU.getMessage());
+        }
+        if (Integer.parseInt(part[1]) >= 0) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_COUNT.getMessage());
+        }
+    }
 
+    private void validateOrderCount(Collection<Integer> count) {
+        if (count.stream().mapToInt(Integer::intValue).sum() > 20) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_OVER_ORDER.getMessage());
+        }
     }
 
     public List<String> splitInputByComma(String input) {
@@ -60,7 +54,7 @@ public class Validator {
 
     private void validateMenuRegex(String input) {
         if (!input.matches(MENU_REGEX)) {
-            throw new IllegalArgumentException("[ERROR] 형식에 맞춰 입력해 주세요.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER_REGEX.getMessage());
         }
     }
 
@@ -70,22 +64,23 @@ public class Validator {
                         .map(Menu::getMenuName)
                         .toList()
                         .contains(menu))) {
-            throw new IllegalArgumentException("[ERROR] 음료만 주문 불가 합니다.");
+            throw new IllegalArgumentException(ErrorMessage.ONLY_DRINKS_EXCEPTION.getMessage());
         }
     }
 
-    private ArrayList<String> getMenu(String input) {
+    private ArrayList<String> getMenu() {
         ArrayList<Menu> menu = new ArrayList<>();
         menu.addAll(getMenuList(Appetizer.values()));
         menu.addAll(getMenuList(MainMenu.values()));
         menu.addAll(getMenuList(Desert.values()));
         menu.addAll(getMenuList(Drink.values()));
 
-       return  menu.stream()
+        return menu.stream()
                 .map(Menu::getMenuName)
                 .collect(Collectors.toCollection(ArrayList::new));
-
     }
+
+
     private <T extends Enum<T> & Menu> ArrayList<Menu> getMenuList(T[] values) {
         return new ArrayList<>(Arrays.asList(values));
     }
