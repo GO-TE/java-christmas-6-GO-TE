@@ -7,17 +7,17 @@
 - [X] 1.식당 방문 날짜를 입력 받는다 (InputView - inputVisitDate)
 
 - 예외 처리
-    - [X] 1~31 사이 정수가 아니라면 예외 처리 한다
+    - [X] 1~31 사이 정수가 아니라면 예외 처리 한다 (DateValidator)
 
 - [X] 주문할 메뉴를 입력 받는다 (InputView - inputOrderMenu)
-  1. [ ] 주문 금액이 1만원 이하면, 이벤트 처리를 하지 않는다
+  1. [X] 주문 금액이 1만원 이하면, 이벤트 처리를 하지 않는다.
 
  - 예외처리
-    - [X] 메뉴판에 없다면 예외 처리 한다
-    - [X] 메뉴 갯수가 1 이상 정수가 아니라면 예외 처리 한다
-    - [X] 음료만 주문한다면 예외 처리 한다
-    - [X] 메뉴 갯수가 20개를 초과하면 예외 처리 한다
-    - [X] 메뉴 입력 포멧이 아니라면 예외 처리 한다
+    - [X] 메뉴판에 없다면 예외 처리 한다 (OrderValidator - validatorEachOrder)
+    - [X] 메뉴 갯수가 1 이상 정수가 아니라면 예외 처리 한다 (OrderValidator - validatorEachOrder
+    - [X] 음료만 주문한다면 예외 처리 한다 (OrderValidator - checkOnlyDrink)
+    - [X] 메뉴 갯수가 20개를 초과하면 예외 처리 한다 (OrderValidator - validateOrderCount)
+    - [X] 메뉴 입력 포멧이 아니라면 예외 처리 한다 (OrderValidator - validatorOrderRegex)
 
 <br>
 

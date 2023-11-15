@@ -1,4 +1,4 @@
-package christmas.util;
+package christmas.util.validator;
 
 import christmas.util.menu.Food;
 import christmas.util.menu.Drink;
@@ -15,7 +15,7 @@ public class OrderValidator {
     private final String MENU_REGEX = "^([가-힣]+-\\d+,?)+$";
 
     public HashMap<String, Integer> validateOrderMenu(String input) {
-        validateMenuRegex(input);
+        validateOrderRegex(input);
         List<String> userMenu = splitInputByComma(input);
         HashMap<String, Integer> order = new HashMap<>();
         for (String eachOrder : userMenu) {
@@ -32,7 +32,7 @@ public class OrderValidator {
         if (!new Menu().getAllMenuName().contains(part[0])) {
             throw new IllegalArgumentException(ErrorMessage.NON_EXISTENT_MENU.getMessage());
         }
-        if (Integer.parseInt(part[1]) >= 0) {
+        if (Integer.parseInt(part[1]) <= 0) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_COUNT.getMessage());
         }
     }
@@ -51,7 +51,7 @@ public class OrderValidator {
         return List.of(input);
     }
 
-    private void validateMenuRegex(String input) {
+    private void validateOrderRegex(String input) {
         if (!input.matches(MENU_REGEX)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER_REGEX.getMessage());
         }
