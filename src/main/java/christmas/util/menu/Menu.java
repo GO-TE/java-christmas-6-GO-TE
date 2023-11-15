@@ -19,6 +19,20 @@ public class Menu {
         return menu;
     }
 
+    public List<String> getMainMenuName() {
+        return getMenuList((MainMenu.values()))
+                .stream()
+                .map(Food::getMenuName)
+                .collect(Collectors.toCollection((ArrayList::new)));
+    }
+
+    public List<String> getMainDesertName() {
+        return getMenuList((Desert.values()))
+                .stream()
+                .map(Food::getMenuName)
+                .collect(Collectors.toCollection((ArrayList::new)));
+    }
+
     public List<String> getAllMenuName() {
         List<Food> menu = getMenu();
 
@@ -36,12 +50,11 @@ public class Menu {
     }
 
 
-
     public HashMap<String, Integer> getMenuMap() {
         List<String> name = getAllMenuName();
         List<Integer> price = getAllMenuPrice();
 
-        return  IntStream.range(0, name.size())
+        return IntStream.range(0, name.size())
                 .boxed()
                 .collect(HashMap::new, (map, i) -> map.put(name.get(i), price.get(i)), HashMap::putAll);
     }
