@@ -1,10 +1,9 @@
-package christmas.util;
+package christmas.util.validator;
 
 import christmas.util.message.ErrorMessage;
 
 public class DateValidator {
     private final String DATE_REGEX = "^\\d+$";
-    private final String MENU_REGEX = "^([가-힣]+-\\d+,?)+$";
 
     private int validateDateRegex(String input) {
         if (!input.matches(DATE_REGEX)) {
